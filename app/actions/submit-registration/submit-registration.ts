@@ -1,11 +1,12 @@
 "use server"
 
 import { sendConfirmationEmail } from "@/lib/email"
-import { registrations, users } from "@/drizzle/src/db/schema"
+import { games, registrations, users } from "@/drizzle/src/db/schema"
 import { getServerSession } from "next-auth/next"
 import db from "@/drizzle/src/db"
 import { authOptions } from "@/lib/auth"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
+
 
 export async function submitRegistration(formData: FormData) {
   const session = await getServerSession(authOptions)
@@ -21,9 +22,21 @@ export async function submitRegistration(formData: FormData) {
   if (!user) {
     throw new Error("User not found in the database")
   }
-
+  
   // Extract form data
   const gameId = Number.parseInt(formData.get("gameId") as string)
+
+  // Check if the user has already registered for this game
+  const existingRegistration = await db.query.registrations.findFirst({
+    where: and(eq(registrations.userId, user.id), eq(registrations.gameId, gameId)),
+  })
+
+  if (existingRegistration) {
+    throw new Error("You have already registered for this game")
+  }
+
+  // Extract form data
+  
   const firstName = formData.get("firstName") as string
   const lastName = formData.get("lastName") as string
   const email = session.user.email! // Use email from session
@@ -147,4 +160,13 @@ export async function submitRegistration(formData: FormData) {
     throw new Error("Failed to submit registration. Please try again.")
   }
 }
+
+export async function validateGameId(id: string) {
+  const game = await db.query.games.findFirst({
+    where: eq(games.id, Number.parseInt(id)),
+  })
+  console.error(game)
+  return game !== null
+}
+
 

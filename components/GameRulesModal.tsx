@@ -17,6 +17,7 @@ interface GameRulesModalProps {
 	onClose: () => void;
 	gameId: string;
 	gameName: string;
+	isLocked?: boolean;
 }
 
 const getTournamentRulesLink = (gameId: string) => {
@@ -41,16 +42,19 @@ export function GameRulesModal({
 	onClose,
 	gameId,
 	gameName,
+	isLocked,
 }: GameRulesModalProps) {
 	const [hasReadRules, setHasReadRules] = useState(false);
 	const router = useRouter();
 
 	const handleProceed = () => {
-		onClose();
-		router.push(
-			`/register?game=${gameId}&gameName=${encodeURIComponent(gameName)}`
-		);
-	};
+		onClose()
+		if (!isLocked) {
+		  // Store game information in sessionStorage
+		  sessionStorage.setItem("selectedGame", JSON.stringify({ id: gameId, name: gameName }))
+		  router.push("/register")
+		}
+	  }
 
 	const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
 		const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -1290,14 +1294,14 @@ export function GameRulesModal({
 	};
 
 	const currentRules = gameId
-    ? gameRules[gameId as keyof typeof gameRules] || {
-        title: "Game Rules",
-        content: <p>Rules not available for this game.</p>,
-      }
-    : {
-        title: "Game Rules",
-        content: <p>Game ID is undefined. Please try again.</p>,
-      }
+		? gameRules[gameId as keyof typeof gameRules] || {
+				title: "Game Rules",
+				content: <p>Rules not available for this game.</p>,
+		  }
+		: {
+				title: "Game Rules",
+				content: <p>Game ID is undefined. Please try again.</p>,
+		  };
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
@@ -1305,35 +1309,41 @@ export function GameRulesModal({
 				<DialogHeader>
 					<DialogTitle>{currentRules.title}</DialogTitle>
 					<DialogDescription>
-						Please read the following rules carefully before proceeding to
-						registration.
+						{isLocked
+							? "You have already registered for this game."
+							: "Please read the following rules carefully before proceeding to registration."}
 					</DialogDescription>
 				</DialogHeader>
-				<ScrollArea className='mt-4 max-h-[60vh] pr-6' onScroll={handleScroll}>
-					<div className='p-4 text-sm'>{currentRules.content}</div>
-				</ScrollArea>
+				{!isLocked && (
+          <ScrollArea className="mt-4 max-h-[60vh] pr-6" onScroll={handleScroll}>
+            <div className="p-4 text-sm">{currentRules.content}</div>
+          </ScrollArea>
+        )}
 				<DialogFooter className='mt-4'>
-					<div className='flex items-center space-x-2 w-full'>
-						<Checkbox
-							id='rules'
-							checked={hasReadRules}
-							onCheckedChange={(checked) => setHasReadRules(checked === true)}
-						/>
-						<label
-							htmlFor='rules'
-							className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-						>
-							I have read and agree to the rules
-						</label>
-					</div>
-					<Button
-						type='submit'
-						disabled={!hasReadRules}
-						onClick={handleProceed}
-						className='w-full mt-4'
-					>
-						Proceed to Registration
-					</Button>
+				{isLocked ? (
+            <Button onClick={onClose} className="w-full">
+              Close
+            </Button>
+          ) : (
+            <>
+              <div className="flex items-center space-x-2 w-full">
+                <Checkbox
+                  id="rules"
+                  checked={hasReadRules}
+                  onCheckedChange={(checked) => setHasReadRules(checked === true)}
+                />
+                <label
+                  htmlFor="rules"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I have read and agree to the rules
+                </label>
+              </div>
+              <Button type="submit" disabled={!hasReadRules} onClick={handleProceed} className="w-full mt-4">
+                Proceed to Registration
+              </Button>
+            </>
+          )}
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import PersonalDetails from "@/components/registration/PersonalDetails"
 import ContactGamingInfo from "@/components/registration/ContactGamingInfo"
 import UniversityVerification from "@/components/registration/UniversityVerification"
@@ -13,6 +13,9 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { RegistrationFormData } from "@/types/registration"
+import { validateGameId } from "../actions/submit-registration/submit-registration"
+
+
 
 
 
@@ -27,23 +30,31 @@ const steps = [
 export default function RegistrationForm() {
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState<RegistrationFormData>({} as RegistrationFormData)
-  const searchParams = useSearchParams()
-  const gameId = searchParams.get("game")
-  const gameName = searchParams.get("gameName")
-  const [decodedGameName, setDecodedGameName] = useState("")
+  const [gameId, setGameId] = useState<string | null>(null)
+  const [gameName, setGameName] = useState<string | null>(null)
   const router = useRouter()
   const isSmallScreen = useMediaQuery("(max-width: 640px)")
-
- 
+  
   useEffect(() => {
-    if (!gameId || !gameName) {
+    const storedGame = sessionStorage.getItem("selectedGame")
+ 
+    if (storedGame) {
+      const { id, name } = JSON.parse(storedGame)
+      validateGameId(id).then((isValid) => {
+        if (isValid) {
+          setGameId(id)
+          setGameName(name)
+        } else {
+          console.error("Invalid game ID")
+          router.push("/select-game")
+        }
+      })
+    } else {
+      console.error("Invalid game ID")
       router.push("/select-game")
     }
-    if (gameName) {
-      setDecodedGameName(decodeURIComponent(gameName))
-    }
+  }, [router])
 
-  }, [gameId, gameName, router])
 
   const updateFormData = (stepData: Partial<RegistrationFormData>) => {
     setFormData((prevData) => {
@@ -125,7 +136,7 @@ export default function RegistrationForm() {
           Back to Games
         </Button>
         <h1 className="text-3xl font-bold text-primary text-center mb-6">
-          {decodedGameName ? `${decodedGameName} Registration` : "KUER Tournament Registration"}
+          {gameName ? `${gameName} Registration` : "KUER Tournament Registration"}
         </h1>
         <ProgressBar steps={steps} currentStep={currentStep} />
         <Card className="mt-6">

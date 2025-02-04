@@ -1,4 +1,4 @@
-import { boolean, timestamp, pgTable, text, primaryKey, integer, serial, varchar, date } from "drizzle-orm/pg-core"
+import { boolean, timestamp, pgTable, text, primaryKey, integer, serial, varchar, date, uniqueIndex } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm"
 import type { AdapterAccount } from "next-auth/adapters"
 
@@ -116,7 +116,13 @@ export const registrations = pgTable("registration", {
   email: varchar("email", { length: 255 }).notNull(),
   branch: varchar("branch", { length: 255 }),
   boardsiderScreenshotUrl: text("boardsider_screenshot_url"),
-})
+  status: varchar("status", { length: 50 }).notNull().default("pending"),
+},
+(table) => ({
+  uniqueUserGame: uniqueIndex("unique_user_game").on(table.userId, table.gameId),
+}),
+)
+
 
 export const registrationsRelations = relations(registrations, ({ one }) => ({
   user: one(users, {

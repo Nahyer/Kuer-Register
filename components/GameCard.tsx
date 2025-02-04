@@ -4,6 +4,8 @@ import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { useState } from "react"
 import { GameRulesModal } from "./GameRulesModal"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
+import { Lock } from "lucide-react"
 
 interface Game {
   id: number
@@ -14,9 +16,10 @@ interface Game {
 
 interface GameCardProps {
   game: Game
+  isLocked: boolean
 }
 
-export function GameCard({ game }: GameCardProps) {
+export function GameCard({ game,isLocked }: GameCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleClick = () => {
@@ -26,7 +29,9 @@ export function GameCard({ game }: GameCardProps) {
   return (
     <>
       <Card
-        className="w-full h-64 cursor-pointer transition-transform hover:scale-105 overflow-hidden relative group"
+        className={`w-full h-64 cursor-pointer transition-transform hover:scale-105 overflow-hidden relative group ${
+          isLocked  ? "cursor-not-allowed" : ""
+        }`}
         onClick={handleClick}
       >
         <Image
@@ -45,12 +50,28 @@ export function GameCard({ game }: GameCardProps) {
             {game.fullName}
           </p>
         </CardContent>
+        {isLocked && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <Lock className="w-12 h-12 text-white" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>You have already registered for this game</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+        
       </Card>
       <GameRulesModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         gameId={game.id.toString()}
         gameName={game.fullName}
+        isLocked={isLocked}
       />
     </>
   )
