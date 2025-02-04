@@ -99,18 +99,19 @@ const formSchema = z.object({
   passportPhotoPreview: z.string().optional(),
 })
 
-export default function PersonalDetails({ formData, updateFormData, nextStep }: ReviewSubmitProps) {
+export default function PersonalDetails({ formData, updateFormData, nextStep, gameId }: ReviewSubmitProps) {
+  const isFemaleOnly = gameId === "4" || gameId === "6" // EAFC 1v1 Women and Tekken Women
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: formData.firstName || "",
       lastName: formData.lastName || "",
-      gender: formData.gender || "",
+      gender: isFemaleOnly ? "female" : formData.gender || "",
       dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth) : undefined,
       passportPhoto: formData.passportPhoto || undefined,
     },
   })
-
   function onSubmit(values: z.infer<typeof formSchema>) {
     const updatedValues = { ...values }
     if (values.dateOfBirth instanceof Date) {
@@ -172,17 +173,21 @@ export default function PersonalDetails({ formData, updateFormData, nextStep }: 
           render={({ field }) => (
             <FormItem>
               <FormLabel>Gender</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select gender" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                </SelectContent>
-              </Select>
+              {isFemaleOnly ? (
+                <Input value="Female" disabled className="bg-gray-100" />
+              ) : (
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
               <FormMessage />
             </FormItem>
           )}

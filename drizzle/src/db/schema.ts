@@ -89,7 +89,7 @@ export const registrations = pgTable("registration", {
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  gameId: integer("game_id").notNull(),
+  gameId: integer("game_id").notNull().references(()=> games.id, { onDelete: "cascade" }),
   firstName: varchar("first_name", { length: 255 }).notNull(),
   lastName: varchar("last_name", { length: 255 }).notNull(),
   gender: varchar("gender", { length: 50 }).notNull(),
