@@ -516,7 +516,6 @@ export function GameRulesModal({
 							📌 (The specific gameplay rules will be shared during the event.)
 						</p>
 					</section>
-					<TornamentRuleLink gameId={gameId} />
 				</div>
 			),
 		},
@@ -673,7 +672,6 @@ export function GameRulesModal({
 							📌 (The specific gameplay rules will be shared during the event.)
 						</p>
 					</section>
-					<TornamentRuleLink gameId={gameId} />
 				</div>
 			),
 		},
