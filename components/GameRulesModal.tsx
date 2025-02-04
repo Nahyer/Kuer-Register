@@ -26,14 +26,12 @@ const getTournamentRulesLink = (gameId: string) => {
 			return "https://drive.google.com/file/d/1xtwCIuW7uGkjRvM9Odt0h4mbSuo6GuzT/view?usp=drive_link";
 		case "2": // PUBGM
 			return "https://drive.google.com/file/d/1NNsdKOKa4H2m-BoSXG301--ek34mD9rS/view?usp=drive_link";
-		case "4": // EAFC 1v1 Women
-			return "https://drive.google.com/file/d/1Ed4F-jZC_d5h4K6sw4U1PnpcxnceKvdl/view?usp=sharing";
 		case "7": // CODM MP
 			return "https://drive.google.com/file/d/1hOR4PBMK5u0H6RmbHOVDUhCEofJkmOVE/view?usp=drive_link";
 		case "8": // eFootball Mobile (assuming this is the default case)
 			return "https://drive.google.com/file/d/1Ed4F-jZC_d5h4K6sw4U1PnpcxnceKvdl/view?usp=sharing";
 		default:
-			return "";
+			return;
 	}
 };
 
