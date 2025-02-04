@@ -43,6 +43,12 @@ export const registrationConfirmationEmail = (name: string, gameName: string, re
       font-size: 0.8em;
       color: #666;
     }
+    .important-note {
+      background-color: #e8f5e9;
+      border-left: 4px solid #25D366;
+      padding: 10px;
+      margin: 15px 0;
+    }
   </style>
 </head>
 <body>
@@ -58,10 +64,16 @@ export const registrationConfirmationEmail = (name: string, gameName: string, re
       <li><strong>Game:</strong> ${gameName}</li>
       <li><strong>Date:</strong> ${format(registrationDate, "MMMM dd, yyyy")}</li>
     </ul>
-    <p>We'll be in touch with further details about the tournament, including schedules and any additional information you may need.</p>
-    <p>If you have any questions or need to update your registration information, please don't hesitate to contact us at support@kuer.co.ke.</p>
-    <p>Join our WhatsApp group for updates and communication:</p>
-    <a href="https://chat.whatsapp.com/KUER_GROUP_LINK" class="whatsapp-button">Join KUER WhatsApp Group</a>
+    <div class="important-note">
+      <p><strong>Important Information About WhatsApp Groups:</strong></p>
+      <ol>
+        <li>Please join our WhatsApp channel for immediate updates:</li>
+        <li>Once your student status is verified, you will receive another email with a link to join the main WhatsApp group for your specific game and tournament.</li>
+      </ol>
+    </div>
+    <p>Join our WhatsApp channel for updates:</p>
+    <a href="https://whatsapp.com/channel/0029VafLdwE96H4XI1gb3X3Z" class="whatsapp-button">Join KUER WhatsApp Channel</a>
+    <p>If you have any questions or need to update your registration information, please don't hesitate to contact us at info@kuer.co.ke.</p>
     <p>Good luck and game on!</p>
   </div>
   <div class="footer">
