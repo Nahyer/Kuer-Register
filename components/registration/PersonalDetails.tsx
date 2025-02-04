@@ -100,8 +100,7 @@ const formSchema = z.object({
 })
 
 export default function PersonalDetails({ formData, updateFormData, nextStep, gameId }: ReviewSubmitProps) {
-  const isFemaleOnly = gameId === "4" || gameId === "6"
-  console.error(gameId) // EAFC 1v1 Women and Tekken Women
+  const isFemaleOnly = gameId === "4" || gameId === "6" //EAFC 1v1 Women and Tekken Women
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
