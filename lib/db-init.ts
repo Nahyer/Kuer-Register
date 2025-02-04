@@ -5,7 +5,7 @@ import { games } from "@/drizzle/src/db/schema"
 const gamesData = [
     {
         id: 1,
-        name: "CODM",
+        name: "CODM BR",
         fullName: "Call of Duty: Mobile",
         imageUrl: "https://res.cloudinary.com/djeyyn3yi/image/upload/v1737567671/images_1_tlq3db.jpg",
     },
@@ -26,7 +26,7 @@ const gamesData = [
         id: 4,
         name: "EAFC 1v1 Women",
         fullName: "EA FC 24 1v1 Women's Tournament",
-        imageUrl: "https://res.cloudinary.com/djeyyn3yi/image/upload/v1737567621/channels4_profile_1_xxuttt.jpg",
+        imageUrl: "https://res.cloudinary.com/djeyyn3yi/image/upload/v1737567704/images_itm6lv.jpg",
     },
     {
         id: 5,
@@ -42,8 +42,21 @@ const gamesData = [
         imageUrl:
             "https://res.cloudinary.com/djeyyn3yi/image/upload/v1737567684/Karakter-Tekken-Ikonik-Featured-750x375_qdcdkn.jpg",
     },
-]
+    {
+        id: 7,
+        name: "CODM MP",
+        fullName: "Call of Duty: Mobile (Multiplayer)",
+        imageUrl: "https://res.cloudinary.com/djeyyn3yi/image/upload/v1737567671/images_1_tlq3db.jpg",
+    },
+    {
+        id: 8,
+        name: "eFootball Mobile",
+        fullName: "eFootball Mobile Tournament",
+        imageUrl: "https://res.cloudinary.com/djeyyn3yi/image/upload/v1737567621/channels4_profile_1_xxuttt.jpg",
+    },
 
+]
+// https://res.cloudinary.com/djeyyn3yi/image/upload/v1737567621/channels4_profile_1_xxuttt.jpg
 let isInitialized = false
 
 export async function initializeDatabase() {

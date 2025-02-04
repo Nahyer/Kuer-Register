@@ -69,10 +69,8 @@ export default function RegistrationForm() {
   }
 
   const nextStep = () => {
-    console.log("Current step before update:", currentStep)
     setCurrentStep((prev) => {
       const newStep = Math.min(prev + 1, steps.length)
-      console.log("New step:", newStep)
       return newStep
     })
   }

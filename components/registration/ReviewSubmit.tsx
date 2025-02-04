@@ -48,7 +48,6 @@ export default function ReviewSubmit({
 		}
 
 		setIsSubmitting(true);
-		console.error("🚀 ~ handleSubmit ~ formData:", formData);
 
 		try {
 			const uploadFiles = async (file: File | Blob) => {
@@ -80,31 +79,22 @@ export default function ReviewSubmit({
 				}
 			};
 
-			const [
-				passportPhotoResult,
-				discordScreenshotResult,
-				studentProofResult,
-				nationalIdResult,
-				boardsiderScreenshotResult,
-			] = await Promise.all([
+			const [passportPhotoResult, discordScreenshotResult, studentProofResult, nationalIdResult] = await Promise.all([
 				uploadFiles(formData.passportPhoto),
 				uploadFiles(formData.discordScreenshot),
 				uploadFiles(formData.studentProof),
 				uploadFiles(formData.nationalId),
-				uploadFiles(formData.boardsiderScreenshot),
-			]);
-
-			// Check if any upload failed
-			if (
-				!passportPhotoResult ||
-				!discordScreenshotResult ||
-				!studentProofResult ||
-				!nationalIdResult ||
-				!boardsiderScreenshotResult
-			) {
-				throw new Error("One or more file uploads failed");
-			}
-
+			  ])
+		
+			  let boardsiderScreenshotResult = null
+			  if (formData.boardsiderScreenshot) {
+				boardsiderScreenshotResult = await uploadFiles(formData.boardsiderScreenshot)
+			  }
+		
+			  // Check if any required upload failed
+			  if (!passportPhotoResult || !discordScreenshotResult || !studentProofResult || !nationalIdResult) {
+				throw new Error("One or more required file uploads failed")
+			  }
 			// Create FormData object
 			const submitFormData = new FormData();
 			Object.entries(formData).forEach(([key, value]) => {
@@ -120,11 +110,10 @@ export default function ReviewSubmit({
 			);
 			submitFormData.append("studentProofUrl", studentProofResult.url);
 			submitFormData.append("nationalIdUrl", nationalIdResult.url);
-			submitFormData.append(
-				"boardsiderScreenshotUrl",
-				boardsiderScreenshotResult.url
-			);
-			submitFormData.append("gameId", gameId);
+			if (boardsiderScreenshotResult) {
+				submitFormData.append("boardsiderScreenshotUrl", boardsiderScreenshotResult.url)
+			  }
+			  submitFormData.append("gameId", gameId)
 
 			// Submit the form
 			const result = await submitRegistration(submitFormData);

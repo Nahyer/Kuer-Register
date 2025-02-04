@@ -9,6 +9,7 @@ import { FileUpload } from "@/components/FileUpload"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { ReviewSubmitProps } from "./UniversityVerification"
+import type { RegistrationFormData } from "@/types/registration"
 import { useState } from "react"
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
@@ -59,7 +60,8 @@ const formSchema = z.object({
         return file.size <= MAX_FILE_SIZE
       }
       return true
-    }, `Max file size is 5MB.`),
+    }, `Max file size is 5MB.`)
+    .optional(),
 })
 
 export default function ContactGamingInfo({
@@ -72,6 +74,8 @@ export default function ContactGamingInfo({
   const isEAFC2v2Open = gameId === "3" // EAFC 2v2 Open
   const isPUBGM = gameId === "2" // PUBGM
   const isCODM = gameId === "1" // CODM
+  const isCODMMP = gameId === "7" // CODM MP
+  const isEFootballMobile = gameId === "8" // eFootball Mobile
 
   const [discordUsernameValid, setDiscordUsernameValid] = useState<boolean | null>(null)
 
@@ -82,11 +86,13 @@ export default function ContactGamingInfo({
       discordUsername: formData.discordUsername || "",
       discordScreenshot: formData.discordScreenshot || formData.discordScreenshotPreview || undefined,
       has2v2Partner: (formData.has2v2Partner as "yes" | "no") || "no",
-      isCaptain: (formData.isCaptain as "yes" | "no") || (isEAFC2v2Open || isPUBGM || isCODM ? "yes" : "no"),
+      isCaptain:
+        (formData.isCaptain as "yes" | "no") ||
+        (isEAFC2v2Open || isPUBGM || isCODM || isCODMMP || isEFootballMobile ? "yes" : "no"),
       teamCaptainName: formData.teamCaptainName || "",
-      hasTeam: (formData.hasTeam as "yes" | "no") || (isPUBGM || isCODM ? "no" : "no"),
+      hasTeam: (formData.hasTeam as "yes" | "no") || (isPUBGM || isCODM || isCODMMP ? "no" : "no"),
       teamName: formData.teamName || "",
-      playerRole: (formData.playerRole as "main" | "sub") || (isPUBGM || isCODM ? "main" : undefined),
+      playerRole: (formData.playerRole as "main" | "sub") || (isPUBGM || isCODM || isCODMMP ? "main" : undefined),
       inGameName: formData.inGameName || "",
       inGameId: formData.inGameId || "",
       boardsiderUsername: formData.boardsiderUsername || "",
@@ -99,7 +105,7 @@ export default function ContactGamingInfo({
   const watchHasTeam = form.watch("hasTeam")
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const updatedValues = {
+    const updatedValues: Partial<RegistrationFormData> = {
       ...values,
       // Preserve the original File objects if they exist
       discordScreenshot:
@@ -232,7 +238,7 @@ export default function ContactGamingInfo({
           )}
         />
 
-        {(isCODM || isPUBGM) && (
+        {(isCODM || isPUBGM || isCODMMP) && (
           <>
             <FormField
               control={form.control}
@@ -339,7 +345,7 @@ export default function ContactGamingInfo({
                     </RadioGroup>
                   </FormControl>
                   <FormDescription>
-                    If you don  t have a team, we will try to link you with other players from the same university.
+                    If you don&apost have a team, we will try to link you with other players from the same university.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -421,7 +427,7 @@ export default function ContactGamingInfo({
                     name="teamCaptainName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Team Captain  s Name</FormLabel>
+                        <FormLabel>Team Captain&aposs Name</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Enter your team captain's name" />
                         </FormControl>
@@ -464,7 +470,7 @@ export default function ContactGamingInfo({
                     </RadioGroup>
                   </FormControl>
                   <FormDescription>
-                    If you don  t have a partner, we will try to link you with another person from the same
+                    If you don&apost have a partner, we will try to link you with another person from the same
                     university.
                   </FormDescription>
                   <FormMessage />
@@ -525,7 +531,7 @@ export default function ContactGamingInfo({
                     name="teamCaptainName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Team Captain  s Name</FormLabel>
+                        <FormLabel>Team Captain&aposs Name</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Enter your team captain's name" />
                         </FormControl>
@@ -536,6 +542,58 @@ export default function ContactGamingInfo({
                 )}
               </>
             )}
+          </>
+        )}
+
+        {isEFootballMobile && (
+          <>
+            <FormField
+              control={form.control}
+              name="inGameName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>In-Game Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter your in-game name" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isCaptain"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Are you the captain for your university?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="yes" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Yes</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="no" />
+                        </FormControl>
+                        <FormLabel className="font-normal">No</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormDescription>
+                    If you are the captain, you will be responsible for registering your university s top players.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </>
         )}
 

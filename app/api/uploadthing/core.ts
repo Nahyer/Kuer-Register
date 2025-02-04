@@ -21,8 +21,7 @@ export const ourFileRouter = {
       return { userId: user.userId }
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Image upload completed for userId:", metadata.userId)
-      console.log("file url", file.url)
+      
 
       return { imageUrl: file.url, userId: metadata.userId }
     }),
@@ -33,8 +32,7 @@ export const ourFileRouter = {
       return { userId: user.userId }
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("PDF upload completed for userId:", metadata.userId)
-      console.log("file url", file.url)
+      
 
       return { pdfUrl: file.url, userId: metadata.userId }
     }),

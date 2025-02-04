@@ -6,8 +6,6 @@ import { authOptions } from "@/lib/auth"
 export default async function signin() {
   
   const session = await getServerSession(authOptions)
-  
-  console.log("🚀 ~ signin ~ session:", session)
 
   if (session) {
     redirect("/")
