@@ -44,7 +44,7 @@ export interface ReviewSubmitProps {
   updateFormData: (data: Partial<RegistrationFormData>) => void
   prevStep?: () => void
   nextStep: () => void
-  gameId?: string
+  gameId?: string | null
 }
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB

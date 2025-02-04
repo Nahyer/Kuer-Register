@@ -79,7 +79,7 @@ export default function RegistrationForm() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <PersonalDetails formData={formData} updateFormData={updateFormData} nextStep={nextStep} />
+        return <PersonalDetails formData={formData} updateFormData={updateFormData} nextStep={nextStep} gameId={gameId} />
       case 2:
         return (
           <ContactGamingInfo

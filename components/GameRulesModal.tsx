@@ -1289,10 +1289,15 @@ export function GameRulesModal({
 		},
 	};
 
-	const currentRules = gameRules[gameId as keyof typeof gameRules] || {
-		title: "Game Rules",
-		content: <p>Rules not available for this game.</p>,
-	};
+	const currentRules = gameId
+    ? gameRules[gameId as keyof typeof gameRules] || {
+        title: "Game Rules",
+        content: <p>Rules not available for this game.</p>,
+      }
+    : {
+        title: "Game Rules",
+        content: <p>Game ID is undefined. Please try again.</p>,
+      }
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
