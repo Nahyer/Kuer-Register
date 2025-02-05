@@ -11,7 +11,6 @@ import ProgressBar from "@/components/ProgressBar"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
-import { useMediaQuery } from "@/hooks/useMediaQuery"
 import type { RegistrationFormData } from "@/types/registration"
 import { validateGameId } from "../actions/submit-registration/submit-registration"
 
@@ -29,7 +28,6 @@ export default function RegistrationForm() {
   const [gameId, setGameId] = useState<string | null>(null)
   const [gameName, setGameName] = useState<string | null>(null)
   const router = useRouter()
-  const isSmallScreen = useMediaQuery("(max-width: 640px)")
 
   useEffect(() => {
     const storedGame = sessionStorage.getItem("selectedGame")

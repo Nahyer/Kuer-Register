@@ -39,7 +39,7 @@ const getTournamentRulesLink = (gameId: string | undefined) => {
   }
 }
 
-export function GameRulesModal({ isOpen, onClose, gameId, gameName, isFemaleOnly, isLocked }: GameRulesModalProps) {
+export function GameRulesModal({ isOpen, onClose, gameId, gameName, isLocked }: GameRulesModalProps) {
   const [hasReadRules, setHasReadRules] = useState(false)
   const router = useRouter()
 
@@ -1064,7 +1064,7 @@ export function GameRulesModal({ isOpen, onClose, gameId, gameName, isFemaleOnly
                 ✅ <strong>Universities must organize internal competitions</strong> to select their top 4 participants.
               </li>
               <li>
-                ✅ <strong>Game captains are responsible for registering their university's top players.</strong>
+                ✅ <strong>Game captains are responsible for registering their university&apos;s top players.</strong>
               </li>
               <li>
                 ✅ <strong>Players must register on time</strong> to avoid missing out.
