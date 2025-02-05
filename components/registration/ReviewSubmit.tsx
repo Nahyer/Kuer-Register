@@ -34,44 +34,12 @@ export default function ReviewSubmit({ formData, updateFormData, prevStep, gameI
   const { toast } = useToast()
   const router = useRouter()
 
-  const blobToFile = (blob: Blob, fileName: string): File => {
-    return new File([blob], fileName, { type: blob.type })
-  }
-
   const { startUpload: startImageUpload } = useUploadThing("imageUploader")
   const { startUpload: startBlobUpload } = useUploadThing("blobUploader")
   const { startUpload: startPdfUpload } = useUploadThing("pdfUploader")
 
-  const uploadFiles = async (file: File | Blob | null) => {
-    if (!file) return null
-
-    try {
-      let uploadResult
-
-      if (file instanceof Blob) {
-        if (file instanceof File) {
-          if (file.type.startsWith("image/")) {
-            uploadResult = await startImageUpload([file])
-          } else {
-            uploadResult = await startPdfUpload([file])
-          }
-        } else {
-          // Convert Blob to File for startBlobUpload
-          const blobFile = blobToFile(file, "blob-upload")
-          uploadResult = await startBlobUpload([blobFile])
-        }
-      } else {
-        throw new Error("Invalid file type")
-      }
-
-      if (!uploadResult || uploadResult.length === 0) {
-        throw new Error(`Failed to upload file`)
-      }
-      return uploadResult[0]
-    } catch (error) {
-      console.error(`Error uploading file:`, error)
-      throw new Error(`Failed to upload file`)
-    }
+  const blobToFile = (blob: Blob, fileName: string): File => {
+    return new File([blob], fileName, { type: blob.type })
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -84,6 +52,35 @@ export default function ReviewSubmit({ formData, updateFormData, prevStep, gameI
     window.scrollTo(0, 0)
 
     try {
+      const uploadFiles = async (file: File | Blob | null) => {
+        if (!file) return null
+        const fileType = file.type.startsWith("image/") ? "image" : "pdf"
+        try {
+          let uploadResult
+
+          if (file instanceof Blob) {
+            if (file instanceof File) {
+              const uploadFunction = fileType === "image" ? startImageUpload : startPdfUpload
+              uploadResult = await uploadFunction([file])
+            } else {
+             // Convert Blob to File for startBlobUpload
+          const blobFile = blobToFile(file, "blob-upload")
+          uploadResult = await startBlobUpload([blobFile])
+            }
+          } else {
+            throw new Error("Invalid file type")
+          }
+
+          if (!uploadResult || uploadResult.length === 0) {
+            throw new Error(`Failed to upload file`)
+          }
+          return uploadResult[0]
+        } catch (error) {
+          console.error(`Error uploading file:`, error)
+          throw new Error(`Failed to upload file`)
+        }
+      }
+
       const [passportPhotoResult, discordScreenshotResult, studentProofResult, nationalIdResult] = await Promise.all([
         uploadFiles(formData.passportPhoto),
         uploadFiles(formData.discordScreenshot),

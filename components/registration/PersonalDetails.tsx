@@ -80,6 +80,7 @@ export default function PersonalDetails({ formData, updateFormData, nextStep, ga
       const reader = new FileReader()
       reader.onloadend = () => {
         updatedValues.passportPhotoPreview = reader.result as string
+        window.scrollTo(0, 0)
         updateFormData(updatedValues)
         nextStep()
       }

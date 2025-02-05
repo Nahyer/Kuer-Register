@@ -61,6 +61,7 @@ export default function UniversityVerification({ formData, updateFormData, prevS
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    window.scrollTo(0, 0)
     updateFormData(values)
     nextStep()
   }

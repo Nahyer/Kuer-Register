@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",
+    "@azure/identity": "^4.6.0",
+    "@azure/storage-blob": "^12.26.0",
     "@googleapis/docs": "^3.3.0",
     "@hookform/resolvers": "latest",
     "@neondatabase/serverless": "^0.10.4",

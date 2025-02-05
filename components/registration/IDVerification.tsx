@@ -12,11 +12,16 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const formSchema = z.object({
   nationalId: z
     .any()
-    .refine((file) => file instanceof File || file instanceof Blob, "National ID is required")
     .refine(
-      (file) => (file instanceof File || file instanceof Blob) && file.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`,
-    ),
+      (file) => file instanceof File || file instanceof Blob || typeof file === "undefined",
+      "National ID is required",
+    )
+    .refine((file) => {
+      if (file instanceof File || file instanceof Blob) {
+        return file.size <= MAX_FILE_SIZE
+      }
+      return true
+    }, `Max file size is 5MB.`),
 })
 
 export default function IDVerification({ formData, updateFormData, prevStep,nextStep}: ReviewSubmitProps) {
@@ -28,10 +33,7 @@ export default function IDVerification({ formData, updateFormData, prevStep,next
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const file = values.nationalId instanceof File 
-      ? values.nationalId 
-      : new File([values.nationalId], "upload", { type: (values.nationalId as Blob).type });
-    updateFormData({ nationalId: file });
+    updateFormData( values);
     nextStep();
   }
 
