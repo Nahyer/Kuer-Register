@@ -8,7 +8,7 @@ export default async function signin() {
   const session = await getServerSession(authOptions)
 
   if (session) {
-    redirect("/")
+    redirect("/select-game")
   }
 
   return (

@@ -2,17 +2,9 @@ import { getServerSession } from "next-auth/next"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { redirect } from "next/navigation"
-import { authOptions } from "@/lib/auth"
 import { SocialLinks } from "@/components/SocialLinks"
 
 export default async function Home() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect("/signin")
-  }
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-8 md:p-12 lg:p-24 relative overflow-hidden">
       {/* Background image */}

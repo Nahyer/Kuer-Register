@@ -12,12 +12,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
-import { RegistrationFormData } from "@/types/registration"
+import type { RegistrationFormData } from "@/types/registration"
 import { validateGameId } from "../actions/submit-registration/submit-registration"
-
-
-
-
 
 const steps = [
   "Personal Details",
@@ -34,10 +30,10 @@ export default function RegistrationForm() {
   const [gameName, setGameName] = useState<string | null>(null)
   const router = useRouter()
   const isSmallScreen = useMediaQuery("(max-width: 640px)")
-  
+
   useEffect(() => {
     const storedGame = sessionStorage.getItem("selectedGame")
- 
+
     if (storedGame) {
       const { id, name } = JSON.parse(storedGame)
       validateGameId(id).then((isValid) => {
@@ -54,7 +50,6 @@ export default function RegistrationForm() {
       router.push("/select-game")
     }
   }, [router])
-
 
   const updateFormData = (stepData: Partial<RegistrationFormData>) => {
     setFormData((prevData) => {
@@ -90,7 +85,9 @@ export default function RegistrationForm() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <PersonalDetails formData={formData} updateFormData={updateFormData} nextStep={nextStep} gameId={gameId} />
+        return (
+          <PersonalDetails formData={formData} updateFormData={updateFormData} nextStep={nextStep} gameId={gameId} />
+        )
       case 2:
         return (
           <ContactGamingInfo
@@ -129,20 +126,21 @@ export default function RegistrationForm() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-8">
-      <div className={`max-w-2xl mx-auto ${isSmallScreen ? "px-4" : ""}`}>
+    <div className="min-h-screen bg-background text-foreground p-4 sm:p-8">
+      <div className="max-w-2xl mx-auto w-full">
         <Button variant="ghost" size="sm" className="mb-6" onClick={handleBackToGames}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Games
         </Button>
-        <h1 className="text-3xl font-bold text-primary text-center mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-6">
           {gameName ? `${gameName} Registration` : "KUER Tournament Registration"}
         </h1>
         <ProgressBar steps={steps} currentStep={currentStep} />
         <Card className="mt-6">
-          <CardContent className="p-6">{renderStep()}</CardContent>
+          <CardContent className="p-4 sm:p-6">{renderStep()}</CardContent>
         </Card>
       </div>
     </div>
   )
 }
+

@@ -7,13 +7,16 @@ export async function middleware(req: NextRequest) {
 
   const { pathname } = req.nextUrl
 
-  // Allow access to the signin page and API routes
-  if (pathname.startsWith("/signin") || pathname.startsWith("/api/")) {
+  // Allow access to the signin page, API routes, and the landing page
+  if (pathname === "/" || pathname.startsWith("/signin") || pathname.startsWith("/api/")) {
     return NextResponse.next()
   }
 
   // Protect important routes
-  if (!token && (pathname.startsWith("/register") || pathname.startsWith("/profile"))) {
+  if (
+    !token &&
+    (pathname.startsWith("/register") || pathname.startsWith("/profile") || pathname.startsWith("/select-game"))
+  ) {
     const url = new URL("/signin", req.url)
     url.searchParams.set("callbackUrl", encodeURI(pathname))
     return NextResponse.redirect(url)

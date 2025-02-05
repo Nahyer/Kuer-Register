@@ -10,46 +10,6 @@ import { FileUpload } from "@/components/FileUpload"
 import { DatePicker } from "@/components/ui/date-picker"
 import type { ReviewSubmitProps } from "./UniversityVerification"
 
-export interface RegistrationFormData {
-  firstName: string
-  lastName: string
-  gender: string
-  dateOfBirth: string
-  whatsapp: string
-  email: string
-  discordUsername: string
-  inGameName: string
-  inGameId: string
-  boardsiderUsername: string
-  hasTeam: string
-  teamName: string
-  playerRole: string
-  isCaptain: string
-  teamCaptainName: string
-  has2v2Partner: "yes" | "no" | undefined
-  university: string
-  branch: string
-  course: string
-  yearOfStudy: string
-  confirmAccuracy: boolean
-  agreeToRules: boolean
-  passportPhoto: File | undefined
-  passportPhotoName?: string
-  passportPhotoPreview?: string
-  discordScreenshot: File | undefined
-  discordScreenshotName?: string
-  discordScreenshotPreview?: string
-  studentProof: File | undefined
-  studentProofName?: string
-  studentProofPreview?: string
-  nationalId: File | undefined
-  nationalIdName?: string
-  nationalIdPreview?: string
-  boardsiderScreenshot: File | undefined
-  boardsiderScreenshotName?: string
-  boardsiderScreenshotPreview?: string
-}
-
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
 const formSchema = z.object({
