@@ -48,39 +48,39 @@ export default function ReviewSubmit({ formData, updateFormData, prevStep, gameI
 
     try {
       const uploadFiles = async (file: File | Blob) => {
-        if (!file) return null
-        const fileType = file.type.startsWith("image/") ? "image" : "pdf"
+        if (!file) return null;
+        const fileType = file.type.startsWith("image/") ? "image" : "pdf";
         try {
-          let uploadResult
-
-          // ONLY create a new File object if the file doesn't have a name
-          const fileToUpload =
-            file instanceof File && file.name
-              ? file
-              : new File([file], `${fileType}_${Date.now()}.${file.type.split("/")[1]}`, { type: file.type })
-
+          let uploadResult;
+          // Always create a new File to ensure a name is assigned
+          const ext = file.type.split("/")[1] || (fileType === "image" ? "jpg" : "pdf");
+          const fileToUpload = new File([file], `${fileType}_${Date.now()}.${ext}`, {
+            type: file.type,
+          });
+      
           if (fileType === "image") {
-            uploadResult = await startImageUpload([fileToUpload])
+            uploadResult = await startImageUpload([fileToUpload]);
           } else {
-            uploadResult = await startPdfUpload([fileToUpload])
+            uploadResult = await startPdfUpload([fileToUpload]);
           }
-
+      
           if (!uploadResult || uploadResult.length === 0) {
-            throw new Error(`Failed to upload ${fileType} file`)
+            throw new Error(`Failed to upload ${fileType} file`);
           }
-          return uploadResult[0]
+          return uploadResult[0];
         } catch (error) {
-          console.error(`Error uploading ${fileType} file:`, error)
-          throw new Error(`Failed to upload ${fileType} `)
+          console.error(`Error uploading ${fileType} file:`, error);
+          throw new Error(`Failed to upload ${fileType}`);
         }
-      }
-
-      const [passportPhotoResult, discordScreenshotResult, studentProofResult, nationalIdResult] = await Promise.all([
-        uploadFiles(formData.passportPhoto),
-        uploadFiles(formData.discordScreenshot),
-        uploadFiles(formData.studentProof),
-        uploadFiles(formData.nationalId),
-      ])
+      };
+      
+      const [passportPhotoResult, discordScreenshotResult, studentProofResult, nationalIdResult] =
+        await Promise.all([
+          uploadFiles(formData.passportPhoto),
+          uploadFiles(formData.discordScreenshot),
+          uploadFiles(formData.studentProof),
+          uploadFiles(formData.nationalId),
+        ]);
 
       let boardsiderScreenshotResult = null
       if (formData.boardsiderScreenshot) {
