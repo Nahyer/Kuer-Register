@@ -80,6 +80,7 @@ export default async function Home() {
       community like no other!
     </p>
   </div>
+  {/* <CountdownTimer endDate={new Date("2024-02-12T23:59:59")} /> */}
 </div>
 
 {/* Footer with social media links */}

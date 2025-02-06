@@ -165,7 +165,6 @@ export async function validateGameId(id: string) {
   const game = await db.query.games.findFirst({
     where: eq(games.id, Number.parseInt(id)),
   })
-  console.error(game)
   return game !== null
 }
 

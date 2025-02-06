@@ -1,6 +1,6 @@
 "use server"
 
-import { BlobServiceClient, type ContainerClient } from '@azure/storage-blob';
+import { BlobServiceClient, type ContainerClient } from "@azure/storage-blob"
 
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING
 const AZURE_STORAGE_CONTAINER_NAME = process.env.AZURE_STORAGE_CONTAINER_NAME!
@@ -9,11 +9,13 @@ if (!AZURE_STORAGE_CONNECTION_STRING) {
   throw new Error("Azure Storage Connection string not found")
 }
 
-
 const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING)
 const containerClient: ContainerClient = blobServiceClient.getContainerClient(AZURE_STORAGE_CONTAINER_NAME)
 
-export async function uploadToBlob(file: File | Blob, fileName: string): Promise<string> {
+export async function uploadToBlob(
+  file: File | Blob,
+  fileName: string,
+): Promise<string> {
   if (!file) {
     throw new Error("File is required")
   }
@@ -23,7 +25,19 @@ export async function uploadToBlob(file: File | Blob, fileName: string): Promise
   // Convert File/Blob to ArrayBuffer
   const arrayBuffer = await file.arrayBuffer()
 
-  await blobClient.uploadData(arrayBuffer)
+  // Determine the content type
+  const contentType = file.type || "application/octet-stream"
+
+  // Set options for the upload
+  const options = {
+    blobHTTPHeaders: {
+      blobContentType: contentType,
+      blobContentDisposition: `inline; filename="${fileName}"`,
+    }
+  }
+
+  await blobClient.uploadData(arrayBuffer, options)
+
   return blobClient.url
 }
 

@@ -55,7 +55,7 @@ export function GameRulesModal({ isOpen, onClose, gameId, gameName, isLocked }: 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
     if (scrollHeight - scrollTop === clientHeight) {
-      console.log("Scroll reached the end of the modal content")
+     
     }
   }
 

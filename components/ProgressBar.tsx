@@ -1,11 +1,19 @@
 import { useMediaQuery } from "@/hooks/useMediaQuery"
+import { Progress } from "@/components/ui/progress"
 
 interface ProgressBarProps {
   steps: string[]
   currentStep: number
+  isSubmitting?: boolean
+  uploadProgress?: number
 }
 
-export default function ProgressBar({ steps, currentStep }: ProgressBarProps) {
+export default function ProgressBar({
+  steps,
+  currentStep,
+  isSubmitting = false,
+  uploadProgress = 0,
+}: ProgressBarProps) {
   const isSmallScreen = useMediaQuery("(max-width: 640px)")
 
   return (
@@ -34,6 +42,12 @@ export default function ProgressBar({ steps, currentStep }: ProgressBarProps) {
           }
         ></div>
       </div>
+      {isSubmitting && (
+        <div className="mt-4 space-y-2">
+          <Progress value={uploadProgress} className="w-full" />
+          <p className="text-center text-sm text-muted-foreground">Uploading: {Math.round(uploadProgress)}%</p>
+        </div>
+      )}
     </div>
   )
 }
