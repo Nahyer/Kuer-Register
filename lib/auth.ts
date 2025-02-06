@@ -7,7 +7,7 @@ import { DefaultSession } from "next-auth"
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db),
   providers: [
-    GoogleProvider({
+    GoogleProvider({ 
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
