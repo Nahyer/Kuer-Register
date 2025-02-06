@@ -48,7 +48,8 @@ export default function ReviewSubmit({ formData, updateFormData, prevStep, gameI
     try {
       const uploadFile = async (file: File | Blob | null, fieldName: string) => {
         if (!file) return null
-        const fileName = `${fieldName}_${Date.now()}_${file instanceof File ? file.name : "blob"}`
+        const fullName = `${formData.firstName} ${formData.lastName}`.trim()
+        const fileName = `${fullName}_${fieldName}_${Date.now()}_${file instanceof File ? file.name : "blob"}`
         return await uploadToBlob(file, fileName)
       }
 

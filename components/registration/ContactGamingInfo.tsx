@@ -25,8 +25,8 @@ const formSchema = z.object({
     .string()
     .min(2, { message: "Discord username must be at least 2 characters." })
     .max(32, { message: "Discord username must be at most 32 characters." })
-    .regex(/^[a-z0-9_]{2,32}$/, {
-      message: "Discord username can only contain lowercase letters, numbers, and underscores.",
+    .regex(/^[a-z0-9_.]{2,32}$/, {
+      message: "Discord username can only contain lowercase letters, numbers, dots, and underscores.",
     }),
   discordScreenshot: z
     .any()
@@ -128,7 +128,7 @@ export default function ContactGamingInfo({
   }
 
   const validateDiscordUsername = (value: string) => {
-    const isValid = /^[a-z0-9_]{2,32}$/.test(value)
+    const isValid = /^[a-z0-9_.]{2,32}$/.test(value)
     setDiscordUsernameValid(isValid)
     return isValid
   }
@@ -154,7 +154,7 @@ export default function ContactGamingInfo({
           )}
         />
 
-        <FormField
+<FormField
           control={form.control}
           name="discordUsername"
           render={({ field }) => (
@@ -182,10 +182,10 @@ export default function ContactGamingInfo({
                 </div>
               </FormControl>
               <FormDescription>
-                Enter your Discord username without the @ symbol. It should be lowercase, can include numbers and
+                Enter your Discord username without the @ symbol. It should be lowercase, can include numbers, dots, and
                 underscores, and be between 2-32 characters.
                 <br />
-                Example: john_doe123
+                Example: john.doe_123
               </FormDescription>
               <FormMessage />
             </FormItem>
