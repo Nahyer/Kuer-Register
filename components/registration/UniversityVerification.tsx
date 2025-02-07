@@ -28,7 +28,7 @@ const formSchema = z.object({
   studentProof: z
   .any()
   .refine(
-    (file) => file instanceof File || file instanceof Blob || typeof file === "undefined",
+    (file) => file instanceof File || file instanceof Blob,
     "Student proof is required",
   )
     .refine((file) => {

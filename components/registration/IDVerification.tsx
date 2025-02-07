@@ -13,7 +13,7 @@ const formSchema = z.object({
   nationalId: z
     .any()
     .refine(
-      (file) => file instanceof File || file instanceof Blob || typeof file === "undefined",
+      (file) => file instanceof File || file instanceof Blob,
       "National ID is required",
     )
     .refine((file) => {
