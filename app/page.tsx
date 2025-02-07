@@ -23,7 +23,7 @@ export default async function Home() {
   {/* Clearer KUER logo placement */}
   <div className="mb-8">
     <Image
-      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/KUER%20transparent-ADWTe637irf50TF7gvZ0Xc3edWtDMY.png"
+      src="/KUER_transparent.png"
       alt="KUER Logo"
       width={150}
       height={150}
@@ -82,7 +82,6 @@ export default async function Home() {
   </div>
   {/* <CountdownTimer endDate={new Date("2024-02-12T23:59:59")} /> */}
 </div>
-
 {/* Footer with social media links */}
 <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-4 text-sm text-gray-400">
   <p>© {new Date().getFullYear()} KUER - Igniting the Esports Revolution</p>

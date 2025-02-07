@@ -5,8 +5,8 @@ import { Navbar } from "@/components/Navbar";
 import type React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/components/AuthProvider";
-import { initializeDatabase } from "@/lib/db-init";
 import { ThemeProvider } from "@/components/ThemeProvider";
+// import { MobileNotification } from "@/components/MobileNotification";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -35,7 +35,6 @@ export const metadata: Metadata = {
 	},
 };
 // 
-initializeDatabase();
 
 export default function RootLayout({
 	children,
@@ -48,7 +47,10 @@ export default function RootLayout({
 			<body className={poppins.className}>
 					<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
 						<Navbar />
-						<main className="min-h-screen bg-background text-foreground pt-16">{children}</main>
+						{/* <MobileNotification /> */}
+						<main className="min-h-screen bg-background text-foreground pt-16">
+							{children}</main>
+						
 						<Toaster />
 					</ThemeProvider>
 				</body>
