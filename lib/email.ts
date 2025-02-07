@@ -2,12 +2,12 @@ import nodemailer from "nodemailer"
 import { registrationConfirmationEmail } from "./emailTemplates"
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.zeptomail.com",
+  host: process.env.NEXT_PUBLIC_ZEPTOMAIL_SMTP_HOST as string,
   port: 587,
   secure: false,
   auth: {
-    user: process.env.ZEPTOMAIL_SMTP_USER,
-    pass: process.env.ZEPTOMAIL_SMTP_PASSWORD,
+    user: process.env.NEXT_PUBLIC_ZEPTOMAIL_SMTP_USER,
+    pass: process.env.NEXT_PUBLIC_ZEPTOMAIL_SMTP_STRP,
   },
 })
 

@@ -75,6 +75,7 @@
     "tsx": "^4.19.2",
     "uploadthing": "^7.4.4",
     "vaul": "^1.1.2",
+    "zeptomail": "^6.1.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
