@@ -6,7 +6,7 @@ import type React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
-// import { MobileNotification } from "@/components/MobileNotification";
+import { MobileNotification } from "@/components/MobileNotification";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -47,7 +47,7 @@ export default function RootLayout({
 			<body className={poppins.className}>
 					<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
 						<Navbar />
-						{/* <MobileNotification /> */}
+						<MobileNotification />/
 						<main className="min-h-screen bg-background text-foreground pt-16">
 							{children}</main>
 						
