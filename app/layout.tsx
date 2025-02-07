@@ -47,7 +47,7 @@ export default function RootLayout({
 			<body className={poppins.className}>
 					<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
 						<Navbar />
-						<MobileNotification />/
+						<MobileNotification />
 						<main className="min-h-screen bg-background text-foreground pt-16">
 							{children}</main>
 						
